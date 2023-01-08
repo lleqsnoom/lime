@@ -3420,7 +3420,7 @@ namespace lime {
 
 	}
 
-	value lime_alc_create_capture_device (HxString devicename, Int frequency, Int format, Int bufferSize) {
+	value lime_alc_create_capture_device (HxString devicename, int frequency, int format, int bufferSize) {
 
 		ALCdevice* alcDevice = alcCaptureOpenDevice (devicename.__s, frequency, format, bufferSize);
 		atexit (lime_al_atexit);
