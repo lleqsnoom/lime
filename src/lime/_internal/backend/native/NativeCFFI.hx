@@ -1,14 +1,14 @@
 package lime._internal.backend.native;
 
 import haxe.io.Bytes;
+import lime.graphics.Image;
+import lime.graphics.ImageBuffer;
 import lime.graphics.opengl.GLBuffer;
 import lime.graphics.opengl.GLFramebuffer;
 import lime.graphics.opengl.GLProgram;
 import lime.graphics.opengl.GLRenderbuffer;
 import lime.graphics.opengl.GLShader;
 import lime.graphics.opengl.GLTexture;
-import lime.graphics.Image;
-import lime.graphics.ImageBuffer;
 import lime.math.Rectangle;
 import lime.media.openal.ALAuxiliaryEffectSlot;
 import lime.utils.DataPointer;
@@ -18,9 +18,9 @@ import lime.graphics.cairo.CairoGlyph;
 import lime.graphics.opengl.GL;
 import lime.math.Matrix3;
 import lime.math.Vector2;
+import lime.media.AudioBuffer;
 import lime.media.openal.ALContext;
 import lime.media.openal.ALDevice;
-import lime.media.AudioBuffer;
 import lime.system.DisplayMode;
 import lime.utils.ArrayBufferView;
 #end
@@ -857,8 +857,7 @@ class NativeCFFI
 		return null;
 	}
 
-	@:hlNative("lime", "hl_file_dialog_open_file") private static function lime_file_dialog_open_file(title:String, filter:String,
-			defaultPath:String):hl.Bytes
+	@:hlNative("lime", "hl_file_dialog_open_file") private static function lime_file_dialog_open_file(title:String, filter:String, defaultPath:String):hl.Bytes
 	{
 		return null;
 	}
@@ -869,8 +868,7 @@ class NativeCFFI
 		return null;
 	}
 
-	@:hlNative("lime", "hl_file_dialog_save_file") private static function lime_file_dialog_save_file(title:String, filter:String,
-			defaultPath:String):hl.Bytes
+	@:hlNative("lime", "hl_file_dialog_save_file") private static function lime_file_dialog_save_file(title:String, filter:String, defaultPath:String):hl.Bytes
 	{
 		return null;
 	}
@@ -886,8 +884,7 @@ class NativeCFFI
 		return 0;
 	}
 
-	@:hlNative("lime", "hl_file_watcher_remove_directory") private static function lime_file_watcher_remove_directory(handle:CFFIPointer,
-		watchID:Int):Void {}
+	@:hlNative("lime", "hl_file_watcher_remove_directory") private static function lime_file_watcher_remove_directory(handle:CFFIPointer, watchID:Int):Void {}
 
 	@:hlNative("lime", "hl_file_watcher_update") private static function lime_file_watcher_update(handle:CFFIPointer):Void {}
 
@@ -1344,11 +1341,9 @@ class NativeCFFI
 		return false;
 	}
 
-	@:hlNative("lime", "hl_window_set_text_input_enabled") private static function lime_window_set_text_input_enabled(handle:CFFIPointer,
-		enabled:Bool):Void {}
+	@:hlNative("lime", "hl_window_set_text_input_enabled") private static function lime_window_set_text_input_enabled(handle:CFFIPointer, enabled:Bool):Void {}
 
-	@:hlNative("lime", "hl_window_set_text_input_rect") private static function lime_window_set_text_input_rect(handle:CFFIPointer,
-		rect:Rectangle):Void {}
+	@:hlNative("lime", "hl_window_set_text_input_rect") private static function lime_window_set_text_input_rect(handle:CFFIPointer, rect:Rectangle):Void {}
 
 	@:hlNative("lime", "hl_window_set_title") private static function lime_window_set_title(handle:CFFIPointer, title:String):String
 	{
@@ -1615,6 +1610,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_alc_open_device(devicename:String):CFFIPointer;
 
+	@:cffi private static function lime_alc_create_capture_device(devicename:String, frequency:Int, format:Int, bufferSize:Int):CFFIPointer;
+
 	@:cffi private static function lime_alc_pause_device(device:CFFIPointer):Void;
 
 	@:cffi private static function lime_alc_process_context(context:CFFIPointer):Void;
@@ -1784,6 +1781,8 @@ class NativeCFFI
 	private static var lime_alc_make_context_current = new cpp.Callable<cpp.Object->Bool>(cpp.Prime._loadPrime("lime", "lime_alc_make_context_current", "ob",
 		false));
 	private static var lime_alc_open_device = new cpp.Callable<String->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_alc_open_device", "so", false));
+	private static var lime_alc_create_capture_device = new cpp.Callable<String->Int->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime",
+		"lime_alc_create_capture_device", "so", false));
 	private static var lime_alc_pause_device = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_pause_device", "ov", false));
 	private static var lime_alc_process_context = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_process_context", "ov",
 		false));
@@ -1906,6 +1905,7 @@ class NativeCFFI
 	private static var lime_alc_get_string = CFFI.load("lime", "lime_alc_get_string", 2);
 	private static var lime_alc_make_context_current = CFFI.load("lime", "lime_alc_make_context_current", 1);
 	private static var lime_alc_open_device = CFFI.load("lime", "lime_alc_open_device", 1);
+	private static var lime_alc_create_capture_device = CFFI.load("lime", "lime_alc_create_capture_device", 4);
 	private static var lime_alc_pause_device = CFFI.load("lime", "lime_alc_pause_device", 1);
 	private static var lime_alc_process_context = CFFI.load("lime", "lime_alc_process_context", 1);
 	private static var lime_alc_resume_device = CFFI.load("lime", "lime_alc_resume_device", 1);
@@ -2254,6 +2254,12 @@ class NativeCFFI
 	}
 
 	@:hlNative("lime", "hl_alc_open_device") private static function lime_alc_open_device(devicename:String):CFFIPointer
+	{
+		return null;
+	};
+
+	@:hlNative("lime", "hl_alc_create_capture_device") private static function lime_alc_create_capture_device(devicename:String, frequency:Int, format:Int,
+			bufferSize:Int):CFFIPointer
 	{
 		return null;
 	};
@@ -2908,8 +2914,8 @@ class NativeCFFI
 		return null;
 	}
 
-	@:hlNative("lime", "hl_cairo_curve_to") private static function lime_cairo_curve_to(handle:CFFIPointer, x1:Float, y1:Float, x2:Float, y2:Float,
-		x3:Float, y3:Float):Void {}
+	@:hlNative("lime", "hl_cairo_curve_to") private static function lime_cairo_curve_to(handle:CFFIPointer, x1:Float, y1:Float, x2:Float, y2:Float, x3:Float,
+		y3:Float):Void {}
 
 	@:hlNative("lime", "hl_cairo_fill") private static function lime_cairo_fill(handle:CFFIPointer):Void {}
 
@@ -3049,8 +3055,7 @@ class NativeCFFI
 
 	@:hlNative("lime", "hl_cairo_push_group") private static function lime_cairo_push_group(handle:CFFIPointer):Void {}
 
-	@:hlNative("lime", "hl_cairo_push_group_with_content") private static function lime_cairo_push_group_with_content(handle:CFFIPointer,
-		content:Int):Void {}
+	@:hlNative("lime", "hl_cairo_push_group_with_content") private static function lime_cairo_push_group_with_content(handle:CFFIPointer, content:Int):Void {}
 
 	@:hlNative("lime", "hl_cairo_rectangle") private static function lime_cairo_rectangle(handle:CFFIPointer, x:Float, y:Float, width:Float,
 		height:Float):Void {}
@@ -3103,8 +3108,8 @@ class NativeCFFI
 	@:hlNative("lime", "hl_cairo_set_source_rgba") private static function lime_cairo_set_source_rgba(handle:CFFIPointer, r:Float, g:Float, b:Float,
 		a:Float):Void {}
 
-	@:hlNative("lime", "hl_cairo_set_source_surface") private static function lime_cairo_set_source_surface(handle:CFFIPointer, surface:CFFIPointer,
-		x:Float, y:Float):Void {}
+	@:hlNative("lime", "hl_cairo_set_source_surface") private static function lime_cairo_set_source_surface(handle:CFFIPointer, surface:CFFIPointer, x:Float,
+		y:Float):Void {}
 
 	@:hlNative("lime", "hl_cairo_set_tolerance") private static function lime_cairo_set_tolerance(handle:CFFIPointer, tolerance:Float):Void {}
 
@@ -3172,8 +3177,7 @@ class NativeCFFI
 		return 0;
 	}
 
-	@:hlNative("lime", "hl_cairo_font_options_set_antialias") private static function lime_cairo_font_options_set_antialias(handle:CFFIPointer,
-		v:Int):Void {}
+	@:hlNative("lime", "hl_cairo_font_options_set_antialias") private static function lime_cairo_font_options_set_antialias(handle:CFFIPointer, v:Int):Void {}
 
 	@:hlNative("lime", "hl_cairo_font_options_set_hint_metrics") private static function lime_cairo_font_options_set_hint_metrics(handle:CFFIPointer,
 		v:Int):Void {}
@@ -3189,8 +3193,7 @@ class NativeCFFI
 		return null;
 	}
 
-	@:hlNative("lime", "hl_cairo_image_surface_create") private static function lime_cairo_image_surface_create(format:Int, width:Int,
-			height:Int):CFFIPointer
+	@:hlNative("lime", "hl_cairo_image_surface_create") private static function lime_cairo_image_surface_create(format:Int, width:Int, height:Int):CFFIPointer
 	{
 		return null;
 	}
@@ -3226,8 +3229,8 @@ class NativeCFFI
 		return 0;
 	}
 
-	@:hlNative("lime", "hl_cairo_pattern_add_color_stop_rgb") private static function lime_cairo_pattern_add_color_stop_rgb(handle:CFFIPointer,
-		offset:Float, red:Float, green:Float, blue:Float):Void {}
+	@:hlNative("lime", "hl_cairo_pattern_add_color_stop_rgb") private static function lime_cairo_pattern_add_color_stop_rgb(handle:CFFIPointer, offset:Float,
+		red:Float, green:Float, blue:Float):Void {}
 
 	@:hlNative("lime", "hl_cairo_pattern_add_color_stop_rgba") private static function lime_cairo_pattern_add_color_stop_rgba(handle:CFFIPointer,
 		offset:Float, red:Float, green:Float, blue:Float, alpha:Float):Void {}
@@ -4857,8 +4860,7 @@ class NativeCFFI
 
 	@:hlNative("lime", "hl_gl_buffer_data") private static function lime_gl_buffer_data(target:Int, size:Int, srcData:DataPointer, usage:Int):Void {}
 
-	@:hlNative("lime", "hl_gl_buffer_sub_data") private static function lime_gl_buffer_sub_data(target:Int, offset:Int, size:Int,
-		srcData:DataPointer):Void {}
+	@:hlNative("lime", "hl_gl_buffer_sub_data") private static function lime_gl_buffer_sub_data(target:Int, offset:Int, size:Int, srcData:DataPointer):Void {}
 
 	@:hlNative("lime", "hl_gl_check_framebuffer_status") private static function lime_gl_check_framebuffer_status(target:Int):Int
 	{
@@ -4875,8 +4877,7 @@ class NativeCFFI
 
 	@:hlNative("lime", "hl_gl_clear_bufferuiv") private static function lime_gl_clear_bufferuiv(buffer:Int, drawBuffer:Int, data:DataPointer):Void {}
 
-	@:hlNative("lime", "hl_gl_client_wait_sync") private static function lime_gl_client_wait_sync(sync:CFFIPointer, flags:Int, timeoutA:Int,
-			timeoutB:Int):Int
+	@:hlNative("lime", "hl_gl_client_wait_sync") private static function lime_gl_client_wait_sync(sync:CFFIPointer, flags:Int, timeoutA:Int, timeoutB:Int):Int
 	{
 		return 0;
 	}
@@ -5462,8 +5463,8 @@ class NativeCFFI
 
 	@:hlNative("lime", "hl_gl_scissor") private static function lime_gl_scissor(x:Int, y:Int, width:Int, height:Int):Void {}
 
-	@:hlNative("lime", "hl_gl_shader_binary") private static function lime_gl_shader_binary(shaders:hl.NativeArray<Int>, binaryformat:Int,
-		binary:DataPointer, length:Int):Void {}
+	@:hlNative("lime", "hl_gl_shader_binary") private static function lime_gl_shader_binary(shaders:hl.NativeArray<Int>, binaryformat:Int, binary:DataPointer,
+		length:Int):Void {}
 
 	@:hlNative("lime", "hl_gl_shader_source") private static function lime_gl_shader_source(shader:Int, source:String):Void {}
 
@@ -5495,8 +5496,8 @@ class NativeCFFI
 	@:hlNative("lime", "hl_gl_tex_storage_3d") private static function lime_gl_tex_storage_3d(target:Int, level:Int, internalformat:Int, width:Int,
 		height:Int, depth:Int):Void {}
 
-	@:hlNative("lime", "hl_gl_tex_sub_image_2d") private static function lime_gl_tex_sub_image_2d(target:Int, level:Int, xoffset:Int, yoffset:Int,
-		width:Int, height:Int, format:Int, type:Int, data:DataPointer):Void {}
+	@:hlNative("lime", "hl_gl_tex_sub_image_2d") private static function lime_gl_tex_sub_image_2d(target:Int, level:Int, xoffset:Int, yoffset:Int, width:Int,
+		height:Int, format:Int, type:Int, data:DataPointer):Void {}
 
 	@:hlNative("lime", "hl_gl_tex_sub_image_3d") private static function lime_gl_tex_sub_image_3d(target:Int, level:Int, xoffset:Int, yoffset:Int,
 		zoffset:Int, width:Int, height:Int, depth:Int, format:Int, type:Int, data:DataPointer):Void {}
@@ -6307,8 +6308,7 @@ class NativeCFFI
 		return null;
 	}
 
-	@:hlNative("lime", "hl_hb_buffer_set_cluster_level") private static function lime_hb_buffer_set_cluster_level(buffer:CFFIPointer,
-		clusterLevel:Int):Void {}
+	@:hlNative("lime", "hl_hb_buffer_set_cluster_level") private static function lime_hb_buffer_set_cluster_level(buffer:CFFIPointer, clusterLevel:Int):Void {}
 
 	@:hlNative("lime", "hl_hb_buffer_set_content_type") private static function lime_hb_buffer_set_content_type(buffer:CFFIPointer, contentType:Int):Void {}
 
@@ -6467,8 +6467,8 @@ class NativeCFFI
 	@:hlNative("lime", "hl_hb_font_set_scale") private static function lime_hb_font_set_scale(font:CFFIPointer, xScale:Int, yScale:Int):Void {}
 
 	@:hlNative("lime",
-		"hl_hb_font_subtract_glyph_origin_for_direction") private static function lime_hb_font_subtract_glyph_origin_for_direction(font:CFFIPointer,
-		glyph:Int, direction:Int, x:Int, y:Int):Void {}
+		"hl_hb_font_subtract_glyph_origin_for_direction") private static function lime_hb_font_subtract_glyph_origin_for_direction(font:CFFIPointer, glyph:Int,
+		direction:Int, x:Int, y:Int):Void {}
 
 	@:hlNative("lime", "hl_hb_ft_font_create") private static function lime_hb_ft_font_create(font:CFFIPointer):CFFIPointer
 	{
@@ -6589,8 +6589,7 @@ class NativeCFFI
 
 	@:hlNative("lime", "hl_hb_set_union") private static function lime_hb_set_union(set:CFFIPointer, other:CFFIPointer):Void {}
 
-	@:hlNative("lime", "hl_hb_shape") private static function lime_hb_shape(font:CFFIPointer, buffer:CFFIPointer,
-		features:hl.NativeArray<CFFIPointer>):Void {}
+	@:hlNative("lime", "hl_hb_shape") private static function lime_hb_shape(font:CFFIPointer, buffer:CFFIPointer, features:hl.NativeArray<CFFIPointer>):Void {}
 	#end
 	#end
 	#if (lime_cffi && !macro && lime_vorbis)

@@ -75,12 +75,16 @@ class ALC
 
 	public static function getContextsDevice(context:ALContext):ALDevice
 	{
-		#if (lime_cffi && lime_openal && !macro) #if !hl var handle:Dynamic = NativeCFFI.lime_alc_get_contexts_device(context);
+		#if (lime_cffi && lime_openal && !macro)
+		#if !hl
+		var handle:Dynamic = NativeCFFI.lime_alc_get_contexts_device(context);
 
 		if (handle != null)
 		{
 			return new ALDevice(handle);
-		} #else #end
+		}
+		#else
+		#end
 		#end
 
 		return null;
@@ -166,6 +170,20 @@ class ALC
 	{
 		#if (lime_cffi && lime_openal && !macro)
 		var handle = NativeCFFI.lime_alc_open_device(deviceName);
+
+		if (handle != null)
+		{
+			return new ALDevice(handle);
+		}
+		#end
+
+		return null;
+	}
+
+	public static function createCaptureDevice(deviceName:String, frequency:Int, format:Int, bufferSize:Int):ALDevice
+	{
+		#if (lime_cffi && lime_openal && !macro)
+		var handle = NativeCFFI.lime_alc_create_capture_device(deviceName, frequency, format, bufferSize);
 
 		if (handle != null)
 		{
